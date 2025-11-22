@@ -65,7 +65,7 @@ variables:
         {% endif %}
       {% endfor %}
     {% endfor %}
-    {{ result.entities | unique | join(', ') }}
+    {{ result.entities | unique | sort(attribute='entity_id') | join(', ') }}
 
 trigger:
 - platform: time
