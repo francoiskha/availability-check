@@ -1,8 +1,8 @@
 blueprint:
-  name: Availability check label (unavailable only)
-  description: Exécute des actions si des entités avec un label spécifique sont "unavailable" aux heures choisies
+  name: Availability check label (with last_reported threshold & unavailable state)
+  description: Exécute des actions aux heures choisies si des entités avec un label spécifique sont "unavailable" ou n'ont pas été mises à jour depuis un certain temps.
   domain: automation
-  source_url: https://github.com/argonaute199/availability-check/blob/main/availability_check_label.yaml
+  source_url: https://github.com/francoiskha/availability-check/blob/main/availability_check_label.yaml
   input:
     time1:
       name: Heure 1
