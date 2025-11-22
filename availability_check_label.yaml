@@ -38,6 +38,10 @@ blueprint:
       name: Label pour surveillance
       description: Label permettant d'identifier les entités à surveiller
       default: ''
+    last_reported_max_minutes :
+      name: seuil d'alerte si entité non mis à jour
+      description: La durée en minutes après laquelle on déclenche une alerte si la valeur n'a pas été mise à jour
+      default: "90"
     actions:
       name: Actions
       description: Notifications ou autre à exécuter. {{entities}} dans message sera remplacé par la liste des entités non disponibles.
@@ -55,8 +59,10 @@ variables:
     {% set result = namespace(entities=[]) %}
     {% set entity_list = label_entities(selector) %}
     {% for item in entity_list %}
-      {% for state in states | selectattr('state', 'eq', 'unavailable') | selectattr('entity_id', 'eq', item) %}
-        {% set result.entities = result.entities + [state.name if state.name else state.entity_id] %}
+      {% for state in states | selectattr('entity_id', 'eq', item) %}
+        {% if (now() - state.last_reported > timedelta(hours = 0, minutes = last_reported_max_minutes)) or ( not has_value(state.entity_id) ) %}
+          {% set result.entities = result.entities + [state.name if state.name else state.entity_id] %}
+        {% endif %}
       {% endfor %}
     {% endfor %}
     {{ result.entities | unique | join(', ') }}
