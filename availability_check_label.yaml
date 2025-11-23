@@ -41,7 +41,13 @@ blueprint:
     last_reported_max_minutes :
       name: seuil d'alerte si entité non mis à jour
       description: La durée en minutes après laquelle on déclenche une alerte si la valeur n'a pas été mise à jour
-      default: "90"
+      default: 90
+      selector:
+          number:
+          min: 1
+          max: 1440
+          unit_of_measurement: minutes
+          mode: box
     actions:
       name: Actions
       description: Notifications ou autre à exécuter. {{entities}} dans message sera remplacé par la liste des entités non disponibles.
